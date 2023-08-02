@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-::selection{
-  background-color:rgb(16, 181, 246);
+::selection {
+  background-color: rgb(14 165 233);
+
   color: white;
 }
 

@@ -1,5 +1,9 @@
+import Header from "../components/Header";
+
 export default function Home() {
   return (
-    <div className="text-white"> Hello </div>
+    <>
+      <Header label='Home' showBackArrou={false}/>
+    </>
   )
 }

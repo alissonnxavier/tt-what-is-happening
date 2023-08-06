@@ -1,8 +1,11 @@
+import axios from 'axios';
 import { useCallback, useState } from 'react';
 import useLoginModal from '@/hooks/useLoginModal';
 import Input from '../layout/Input';
 import Modal from '../Modal';
 import useRegisterModal from '@/hooks/useRegisterModal';
+import { toast } from 'react-hot-toast';
+import { signIn } from 'next-auth/react';
 
 
 const RegisterModal = () => {
@@ -25,47 +28,60 @@ const RegisterModal = () => {
     }, [isLoading, registerModal, loginModal]);
 
     const onSubmit = useCallback(async () => {
-        try {
 
-            //TODO ADD REGISTER AND LOG IN
+        try {
             setIsLoading(true);
+
+            await axios.post('/api/register', {
+                email: email,
+                password: password,
+                username: username,
+                name: name,
+                
+            } );
+
+            toast.success('Account created.');
+
+           /*  signIn('credentials', {
+                email,
+                password,
+            }); */
+
             registerModal.onClose();
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            toast.error('Something went wrong');
         } finally {
             setIsLoading(false);
         }
-    }, [registerModal]);
+    }, [registerModal, email, password, username, name]);
 
     const bodyContent = (
-        <div className='flex flex-col gap-4'>
+        <div className="flex flex-col gap-4">
             <Input
-                placeholder='E-mail'
-                type='email'
-                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+                placeholder="Email"
                 value={email}
-                disabled={isLoading}
+                onChange={(e) => setEmail(e.target.value)}
             />
             <Input
-                placeholder='Name'
-                type='text'
-                onChange={(e) => setName(e.target.value)}
+                disabled={isLoading}
+                placeholder="Name"
                 value={name}
-                disabled={isLoading}
+                onChange={(e) => setName(e.target.value)}
             />
             <Input
-                placeholder='Username'
-                type='text'
-                onChange={(e) => setUsername(e.target.value)}
+                disabled={isLoading}
+                placeholder="Username"
                 value={username}
-                disabled={isLoading}
+                onChange={(e) => setUsername(e.target.value)}
             />
             <Input
-                placeholder='Password'
-                type='password'
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
                 disabled={isLoading}
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
             />
         </div>
     )

@@ -37,15 +37,15 @@ const RegisterModal = () => {
                 password: password,
                 username: username,
                 name: name,
-                
-            } );
+
+            });
 
             toast.success('Account created.');
 
-           /*  signIn('credentials', {
+            signIn('credentials', {
                 email,
                 password,
-            }); */
+            });
 
             registerModal.onClose();
         } catch (error) {

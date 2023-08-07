@@ -3,6 +3,7 @@ import useLoginModal from '@/hooks/useLoginModal';
 import Input from '../layout/Input';
 import Modal from '../Modal';
 import useRegisterModal from '@/hooks/useRegisterModal';
+import { signIn } from 'next-auth/react';
 
 
 const LoginModal = () => {
@@ -19,21 +20,26 @@ const LoginModal = () => {
             return;
         };
         loginModal.onClose();
-        registerModal.onOpen(); 
+        registerModal.onOpen();
     }, [isLoading, registerModal, loginModal]);
 
     const onSubmit = useCallback(async () => {
         try {
-
-            //TODO ADD LOG IN
             setIsLoading(true);
+
+            await signIn('credentials', {
+                email,
+                password,
+            })
+
             loginModal.onClose();
         } catch (error) {
+            console.log('alisson erro na senha')
             console.log(error)
         } finally {
             setIsLoading(false);
         }
-    }, [loginModal]);
+    }, [loginModal, email, password]);
 
     const bodyContent = (
         <div className='flex flex-col gap-4'>

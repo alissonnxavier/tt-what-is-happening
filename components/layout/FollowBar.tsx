@@ -2,6 +2,7 @@ import useUsers from '@/hooks/useUsers'
 import React from 'react'
 import Avatar from '../Avatar';
 
+
 const FollowBar = () => {
 
     const { data: users = [] } = useUsers();
@@ -34,4 +35,4 @@ const FollowBar = () => {
     )
 }
 
-export default FollowBar
+export default FollowBar;

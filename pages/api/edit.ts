@@ -14,8 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
         const { name, username, bio, profileImage, coverImage } = req.body;
-        console.log(name, username)
-
 
         if (!name || !username) {
             throw new Error('Missing fields');

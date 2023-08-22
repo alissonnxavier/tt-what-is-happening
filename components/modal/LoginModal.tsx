@@ -34,7 +34,6 @@ const LoginModal = () => {
 
             loginModal.onClose();
         } catch (error) {
-            console.log('alisson erro na senha')
             console.log(error)
         } finally {
             setIsLoading(false);

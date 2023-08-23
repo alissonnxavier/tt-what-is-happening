@@ -4,7 +4,8 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useMemo } from 'react';
 import { formatDistanceToNowStrict } from 'date-fns';
 import Avatar from '../Avatar';
-import { AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
+import useLike from '@/hooks/useLike';
 
 
 interface PostItemProps {
@@ -18,6 +19,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
     const loginModal = useLoginModal();
 
     const { data: currentUser } = useCurrentUser();
+    const { hasLiked, toggleLike } = useLike({ postId: data.id, userId });
 
     const goToUser = useCallback((event: any) => {
         event.stopPropagation();
@@ -31,8 +33,13 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
 
     const onLike = useCallback((event: any) => {
         event.stopPropagation();
-        loginModal.onOpen();
-    }, [loginModal]);
+
+        if(!currentUser){
+            return loginModal.onOpen(); 
+        }
+
+        toggleLike();
+    }, [loginModal, currentUser, toggleLike]);
 
     const createdAt = useMemo(() => {
         if (!data?.createdAt) {
@@ -41,20 +48,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
         return formatDistanceToNowStrict(new Date(data.createdAt));
     }, [data?.createdAt]);
 
-    function reduce(str: string) {
-
-        if (str.length > 25) {
-            const division = Math.round(str.length / 25);
-            let i = 0;
-            let s = 1;
-            while (i < division) {
-                s++;
-                return s++;
-            }
-        }
-
-        return str;
-    };
+    const LikeIcon = hasLiked ? AiFillHeart : AiOutlineHeart;
 
     return (
         <div
@@ -123,7 +117,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
                         transition
                         hover:text-red-500
                     '>
-                    <AiOutlineHeart size={20} />
+                    <LikeIcon size={20} />
                     <p>
                         {data.comments?.length || 0}
                     </p>

@@ -117,9 +117,9 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
                         transition
                         hover:text-red-500
                     '>
-                    <LikeIcon size={20} />
+                    <LikeIcon size={20} color={hasLiked ? 'red' : ''}/>
                     <p>
-                        {data.comments?.length || 0}
+                        {data.likedIds?.length || 0}
                     </p>
                 </div>
             </div>

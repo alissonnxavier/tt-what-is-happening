@@ -28,35 +28,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         let updatedFollowingIds = [...(user?.followingIds || [])];
-        console.log('primeiro console', updatedFollowingIds)
-        console.log(user)
-    
 
         if (req.method === 'POST') {
             updatedFollowingIds.push(userId);
-            console.log('console no IF', updatedFollowingIds)
-            
-            // NOTIFICATION PART START
+
             try {
                 await prisma.notification.create({
                     data: {
                         body: 'Someone followed you!',
-                        userId,
+                        userId
                     },
                 });
 
                 await prisma.user.update({
                     where: {
-                        id: userId,
+                        id: userId
                     },
                     data: {
-                        hasNotification: true,
+                        hasNotification: true
                     }
-                });
+                })
             } catch (error) {
                 console.log(error);
             }
-            // NOTIFICATION PART END
 
         }
 
